@@ -18,6 +18,8 @@ inputs:
     description: List of secrets to fetch, separated by newlines
     required: true
 
+outputs:
+
 runs:
   using: composite
   steps:
