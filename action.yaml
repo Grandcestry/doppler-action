@@ -54,8 +54,8 @@ runs:
           fi
 
           VAL=$(echo "$ALL_SECRETS" | grep "^${SECRET}=" | cut -d'=' -f2)
-          VAL="${VAL%\"}"   # Removes trailing quote
-          VAL="${VAL#\"}"   # Removes leading quote
+          # VAL="${VAL%\"}"   # Removes trailing quote
+          # VAL="${VAL#\"}"   # Removes leading quote
 
 
           # Mask the secret value so it's not visible in logs
