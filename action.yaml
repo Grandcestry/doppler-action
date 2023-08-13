@@ -37,12 +37,11 @@ runs:
       run: |
         ALL_SECRETS=$(doppler secrets download -p ${{ inputs.doppler-project }} -c ${{ inputs.doppler-config }} --no-file --format env)
 
-        echo "SECRETS_LIST: '${{ inputs.secrets }}'"
-
-
         # Validate and retrieve each secret from the full list
         for SECRET in "${{ inputs.secrets }}"; do
           SECRET=$(echo "$SECRET" | xargs) # This trims whitespace
+
+          echo "Retrieving secret '$SECRET'"
 
           if [[ ! $SECRET =~ ^[A-Za-z0-9_-]+$ ]]; then
             echo "Error: Invalid secret name $SECRET. Secret names can only contain [A-Z], [a-z], [0-9], [-], and [_]."
@@ -52,13 +51,17 @@ runs:
           VAL=$(echo "$ALL_SECRETS" | grep "^${SECRET}=" | cut -d'=' -f2)
           
           if [ -z "$VAL" ]; then
-            echo "Error: Secret $SECRET not found."
+            echo "::error::Error: Secret $SECRET not found."
             exit 1
           fi
-          
+
           # Mask the secret value so it's not visible in logs
-          echo "::add-mask::$VAL"
+          # ! undo
+          # echo "::add-mask::$VAL"
           
           # Set the output
           echo "${SECRET}=${VAL}" >> $GITHUB_OUTPUT
+
+          # ! undo
+          echo "${SECRET}=${VAL}"
         done
