@@ -37,8 +37,13 @@ runs:
       run: |
         ALL_SECRETS=$(doppler secrets download -p ${{ inputs.doppler-project }} -c ${{ inputs.doppler-config }} --no-file --format env)
 
+        echo "SECRETS_LIST: '${{ inputs.secrets }}'"
+
+
         # Validate and retrieve each secret from the full list
         for SECRET in "${{ inputs.secrets }}"; do
+          SECRET=$(echo "$SECRET" | xargs) # This trims whitespace
+
           if [[ ! $SECRET =~ ^[A-Za-z0-9_-]+$ ]]; then
             echo "Error: Invalid secret name $SECRET. Secret names can only contain [A-Z], [a-z], [0-9], [-], and [_]."
             exit 1
