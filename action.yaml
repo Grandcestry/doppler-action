@@ -59,5 +59,6 @@ runs:
 
           echo "::add-mask::$VAL"
           
+          echo "Debug: ${SECRET}=${VAL}"
           echo "${SECRET}=${VAL}" >> "$GITHUB_OUTPUT"
         done
