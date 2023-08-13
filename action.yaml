@@ -2,8 +2,16 @@ name: Doppler Secrets Retrieval
 description: Fetch secrets from Doppler
 
 inputs:
-  doppler_token:
+  doppler-token:
     description: Doppler token
+    required: true
+
+  doppler-project:
+    description: Doppler project
+    required: true
+
+  doppler-config:
+    description: Doppler config
     required: true
 
   secrets:
@@ -22,12 +30,12 @@ runs:
 
     - name: Authenticate with Doppler
       shell: bash
-      run: echo ${{ secrets.doppler_token }} | doppler configure set token --scope /
+      run: echo ${{ secrets.doppler-token }} | doppler configure set token --scope /
 
     - name: Retrieve and Validate secrets
       shell: bash
       run: |
-        ALL_SECRETS=$(doppler secrets download --no-file --format env)
+        ALL_SECRETS=$(doppler secrets download -p ${{ inputs.doppler-project }} -c ${{ inputs.doppler-config }} --no-file --format env)
 
         # Validate and retrieve each secret from the full list
         for SECRET in "${{ inputs.secrets }}"; do
