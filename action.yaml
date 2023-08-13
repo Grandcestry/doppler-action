@@ -57,10 +57,7 @@ runs:
           # VAL="${VAL%\"}"   # Removes trailing quote
           # VAL="${VAL#\"}"   # Removes leading quote
 
-
-          # Mask the secret value so it's not visible in logs
           echo "::add-mask::$VAL"
           
-          # Set the output
-          echo "${SECRET}=${VAL}" >> $GITHUB_OUTPUT
+          echo "${SECRET}=${VAL}" >> "$GITHUB_OUTPUT"
         done
