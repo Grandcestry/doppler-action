@@ -30,7 +30,7 @@ runs:
 
     - name: Authenticate with Doppler
       shell: bash
-      run: echo ${{ secrets.doppler-token }} | doppler configure set token --scope /
+      run: echo ${{ inputs.doppler-token }} | doppler configure set token --scope /
 
     - name: Retrieve and Validate secrets
       shell: bash
