@@ -41,8 +41,6 @@ runs:
         for SECRET in "${{ inputs.secrets }}"; do
           SECRET=$(echo "$SECRET" | xargs) # This trims whitespace
 
-          echo "Retrieving secret '$SECRET'"
-
           if [[ ! $SECRET =~ ^[A-Za-z0-9_-]+$ ]]; then
             echo "Error: Invalid secret name $SECRET. Secret names can only contain [A-Z], [a-z], [0-9], [-], and [_]."
             exit 1
