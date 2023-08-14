@@ -55,6 +55,7 @@ async function run() {
     );
 
     let output = "";
+
     for (const secret of secrets) {
       const trimmedSecret = secret.trim();
 
@@ -68,15 +69,13 @@ async function run() {
       );
       if (matchedSecret && matchedSecret[1]) {
         const value = matchedSecret[1];
-        core.setSecret(value);
-        output += `${trimmedSecret}=${value}\n`;
+        core.setSecret(value); // Masks the secret value in logs
+        core.setOutput(trimmedSecret, value); // Set the secret as an output
       } else {
         core.setFailed(`Error: Secret ${trimmedSecret} not found.`);
         return;
       }
     }
-
-    core.setOutput("secrets", output);
   } catch (error) {
     core.setFailed(error.message);
   }
