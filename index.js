@@ -11,9 +11,8 @@ async function run() {
 
     // Install Doppler CLI
     await exec.exec(
-      'curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sudo sh'
+        `(curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sudo sh`
     );
-    await exec.exec("doppler --version");
 
     // Authenticate with Doppler
     await exec.exec(

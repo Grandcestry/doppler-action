@@ -25,7 +25,6 @@ runs:
       shell: bash
       run: |
         (curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sudo sh
-
         echo "Doppler version: $(doppler --version)"
 
     - name: Authenticate with Doppler
