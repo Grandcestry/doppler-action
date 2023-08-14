@@ -1,26 +1,26 @@
 const core = require("@actions/core");
 const exec = require("@actions/exec");
-const axios = require('axios');
-const fs = require('fs').promises;
-const os = require('os');
-const path = require('path');
+const axios = require("axios");
+const fs = require("fs").promises;
+const os = require("os");
+const path = require("path");
 
 async function downloadAndInstallDoppler() {
-    try {
-        const response = await axios.get('https://cli.doppler.com/install.sh', {
-            responseType: 'text'
-        });
+  try {
+    const response = await axios.get("https://cli.doppler.com/install.sh", {
+      responseType: "text",
+    });
 
-        const scriptPath = path.join(os.tmpdir(), 'install-doppler.sh');
-        await fs.writeFile(scriptPath, response.data, { mode: 0o755 });  // Make it executable
+    const scriptPath = path.join(os.tmpdir(), "install-doppler.sh");
+    await fs.writeFile(scriptPath, response.data, { mode: 0o755 }); // Make it executable
 
-        await exec.exec(`bash ${scriptPath}`);
-    } catch (error) {
-        core.setFailed(`Failed to download and install Doppler CLI: ${error.message}`);
-    }
+    await exec.exec(`sudo  bash ${scriptPath}`);
+  } catch (error) {
+    core.setFailed(
+      `Failed to download and install Doppler CLI: ${error.message}`
+    );
+  }
 }
-
-
 
 async function run() {
   try {
@@ -31,7 +31,6 @@ async function run() {
     const secrets = core.getInput("secrets").split("\n");
 
     await downloadAndInstallDoppler();
-
 
     // Authenticate with Doppler
     await exec.exec(
