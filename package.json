@@ -1,0 +1,23 @@
+{
+  "name": "doppler-secrets-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Grandcestry/doppler-secrets-action.git"
+  },
+  "author": "Ilya Suzdalnitskiy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Grandcestry/doppler-secrets-action/issues"
+  },
+  "homepage": "https://github.com/Grandcestry/doppler-secrets-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/exec": "^1.1.1"
+  }
+}

@@ -1,64 +1,20 @@
-name: Doppler Secrets Retrieval
+name: Doppler Secrets
 description: Fetch secrets from Doppler
 
 inputs:
   doppler-token:
     description: Doppler token
     required: true
-
   doppler-project:
     description: Doppler project
     required: true
-
   doppler-config:
     description: Doppler config
     required: true
-
   secrets:
     description: List of secrets to fetch, separated by newlines
     required: true
 
 runs:
-  using: composite
-  steps:
-    - name: Install Doppler CLI
-      shell: bash
-      run: |
-        (curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sudo sh
-
-        echo "Doppler version: $(doppler --version)"
-
-    - name: Authenticate with Doppler
-      shell: bash
-      run: echo ${{ inputs.doppler-token }} | doppler configure set token --scope /
-
-    - name: Retrieve and Validate secrets
-      shell: bash
-      run: |
-        ALL_SECRETS=$(doppler secrets download -p ${{ inputs.doppler-project }} -c ${{ inputs.doppler-config }} --no-file --format env)
-
-        # Validate and retrieve each secret from the full list
-        for SECRET in "${{ inputs.secrets }}"; do
-          SECRET=$(echo "$SECRET" | xargs) # This trims whitespace
-
-          if [[ ! $SECRET =~ ^[A-Za-z0-9_-]+$ ]]; then
-            echo "Error: Invalid secret name $SECRET. Secret names can only contain [A-Z], [a-z], [0-9], [-], and [_]."
-            exit 1
-          fi
-
-          VAL=$(echo "$ALL_SECRETS" | grep "^${SECRET}=" | cut -d'=' -f2)
-          
-          if [ -z "$VAL" ]; then
-            echo "::error::Error: Secret $SECRET not found."
-            exit 1
-          fi
-
-          VAL=$(echo "$ALL_SECRETS" | grep "^${SECRET}=" | cut -d'=' -f2)
-          # VAL="${VAL%\"}"   # Removes trailing quote
-          # VAL="${VAL#\"}"   # Removes leading quote
-
-          echo "::add-mask::$VAL"
-          
-          echo "Debug: ${SECRET}=${VAL}"
-          echo "${SECRET}=${VAL}" >> "$GITHUB_OUTPUT"
-        done
+  using: node12
+  main: index.js
