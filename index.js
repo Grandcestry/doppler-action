@@ -40,8 +40,8 @@ async function run() {
     await exec.exec(
       "doppler secrets download",
       [
-        `-p ${dopplerProject}`,
-        `-c ${dopplerConfig}`,
+        `-p=${dopplerProject}`,
+        `-c=${dopplerConfig}`,
         "--no-file",
         "--format=env",
       ],
