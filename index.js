@@ -33,9 +33,8 @@ async function run() {
     await downloadAndInstallDoppler();
 
     // Authenticate with Doppler
-    await exec.exec(
-      `echo ${dopplerToken} | doppler configure set token --scope /`
-    );
+    process.env.DOPPLER_TOKEN = dopplerToken;
+    // await exec.exec("doppler configure set token --scope /");
 
     let allSecrets = "";
     await exec.exec(
