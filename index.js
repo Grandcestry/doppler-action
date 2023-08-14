@@ -44,7 +44,7 @@ async function run() {
         `-p ${dopplerProject}`,
         `-c ${dopplerConfig}`,
         "--no-file",
-        "--format env",
+        "--format=env",
       ],
       {
         listeners: {
